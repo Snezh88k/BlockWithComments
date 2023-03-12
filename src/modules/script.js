@@ -1,3 +1,7 @@
+import deleteIcon from "../image/delete.svg";
+import likeFalseIcon from "../image/likeFalse.svg";
+import likeTrueIcon from "../image/likeTrue.svg";
+
 const createCommentObj = (id, name, comment, like, date) => ({
   id,
   name,
@@ -29,10 +33,10 @@ const deleteComment = (e) => {
 const likeComment = (elem, btn) => {
   if (elem.like) {
     elem.like = false;
-    btn.innerHTML = '<img src="./image/likeFalse.svg"/>';
+    btn.innerHTML = `<img src="${likeFalseIcon}"/>`;
   } else {
     elem.like = true;
-    btn.innerHTML = '<img src="./image/likeTrue.svg"/>';
+    btn.innerHTML = `<img src="${likeTrueIcon}"/>`;
   }
 };
 
@@ -85,7 +89,7 @@ form.addEventListener("submit", function (e) {
     lastId,
     name.value,
     comment.value,
-    (like = false),
+    false,
     isPostCreated()
   );
 
@@ -111,8 +115,8 @@ form.addEventListener("submit", function (e) {
   textComment.innerHTML = com.comment;
   authorСomment.innerHTML = com.name;
   dateComment.innerHTML = com.date;
-  deleteCommentButton.innerHTML = '<img src="./image/delete.svg"/>';
-  likeCommentButton.innerHTML = '<img src="./image/likeFalse.svg"/>';
+  deleteCommentButton.innerHTML = `<img src="${deleteIcon}"/>`;
+  likeCommentButton.innerHTML = `<img src="${likeFalseIcon}"/>`;
 
   const currentDiv = document.getElementById("comments");
   currentDiv.appendChild(newCommenBlock);
