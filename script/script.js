@@ -1,34 +1,22 @@
-//  onclick="hello()"
-// const hello = () => {
-//   let dateControl = document.querySelector('input[type="date"]');
-//   console.log(dateControl.value); // prints "2017-06-01"
-// };
-
-// function CommentObj(id, name, comment, data) {
-//   this.id = id;
-//   this.name = name;
-//   this.comment = comment;
-// }
-
-const createCommentObj = (id, name, comment, date, like) => ({
+const createCommentObj = (id, name, comment, like, date) => ({
   id,
   name,
   comment,
-  date,
   like,
+  date,
 });
 
 const form = document.querySelector(".form");
 const comment = document.getElementById("entering_comment");
 const name = document.getElementById("name");
-const date = document.getElementById("date");
+const dateInput = document.getElementById("date");
 
-let = lastId = 0;
+let lastId = 0;
 const arrayСomments = [];
 
 const deleteComment = (e) => {
   const commentDiv = e.target.closest(".comment");
-  console.log(commentDiv.dataset.id);
+
   const commentId = commentDiv.dataset.id;
   commentDiv.remove();
 
@@ -36,7 +24,6 @@ const deleteComment = (e) => {
     (comment) => comment.id === commentId
   );
   arrayСomments.splice(commentIndex, 1);
-  console.log(arrayСomments);
 };
 
 const likeComment = (elem, btn) => {
@@ -49,6 +36,46 @@ const likeComment = (elem, btn) => {
   }
 };
 
+const isPostCreated = () => {
+  let now = new Date();
+
+  let dayOfMonth = now.getDate();
+  let month = now.getMonth();
+  let year = now.getFullYear();
+  let hour = now.getHours();
+  let minutes = now.getMinutes();
+
+  month = month < 10 ? "0" + month : month;
+  dayOfMonth = dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth;
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+
+  let today = new Date(year, month, dayOfMonth);
+  let customDate = new Date(dateInput.value);
+
+  customDate.setHours(customDate.getHours() - 3);
+
+  let diff = now - today; // разница в миллисекундах
+  let diffTom = now - customDate;
+
+  let differentToday = Math.round(diff / 1000);
+  let differentCastomDate = Math.round(diffTom / 1000);
+  // console.log(Math.round(diffTom / 1000)); //получаем секунды до выставленной даты
+  // console.log(Math.round(diff / 1000)); // получаем секунды от начала суток
+  if (differentCastomDate - differentToday === 86400) {
+    // Вчера
+    return `Вчера ${hour}:${minutes}`;
+  } else if (
+    // Сегодня
+    (differentCastomDate < 86400 && differentCastomDate > 0) ||
+    !differentCastomDate
+  ) {
+    return `Сегодня ${hour}:${minutes}`;
+  } else {
+    // Другая дата
+    return `${dateInput.value} ${hour}:${minutes}`;
+  }
+};
+
 form.addEventListener("submit", function (e) {
   e.preventDefault();
 
@@ -58,19 +85,21 @@ form.addEventListener("submit", function (e) {
     lastId,
     name.value,
     comment.value,
-    new Date(),
-    (like = false)
+    (like = false),
+    isPostCreated()
   );
+
   arrayСomments.push(com);
 
-  let newDiv = document.createElement("div");
+  let newCommenBlock = document.createElement("div");
   let topLine = document.createElement("div");
+  let bottomLine = document.createElement("div");
 
-  newDiv.dataset.id = lastId;
-  newDiv.setAttribute("id", `comment-${lastId}`);
-  newDiv.classList.add("comment");
+  newCommenBlock.dataset.id = lastId;
+  newCommenBlock.setAttribute("id", `comment-${lastId}`);
+  newCommenBlock.classList.add("comment");
 
-  let textComment = document.createElement("div");
+  let textComment = document.createElement("span");
   let authorСomment = document.createElement("div");
   let deleteCommentButton = document.createElement("span");
   let likeCommentButton = document.createElement("span");
@@ -79,31 +108,29 @@ form.addEventListener("submit", function (e) {
   authorСomment.classList.add("authorComment");
   textComment.classList.add("textComment");
 
-  const commentDate = `${com.date.getMonth() + 1}+${com.date.getDate()}`;
-
   textComment.innerHTML = com.comment;
   authorСomment.innerHTML = com.name;
-  dateComment.innerHTML = commentDate;
+  dateComment.innerHTML = com.date;
   deleteCommentButton.innerHTML = '<img src="./image/delete.svg"/>';
   likeCommentButton.innerHTML = '<img src="./image/likeFalse.svg"/>';
 
   const currentDiv = document.getElementById("comments");
-  currentDiv.appendChild(newDiv);
+  currentDiv.appendChild(newCommenBlock);
 
-  newDiv.appendChild(topLine);
+  newCommenBlock.appendChild(topLine);
+  newCommenBlock.appendChild(textComment);
+  newCommenBlock.appendChild(bottomLine);
 
-  newDiv.appendChild(textComment);
   topLine.appendChild(authorСomment);
   topLine.appendChild(deleteCommentButton);
-  newDiv.appendChild(dateComment);
-  newDiv.appendChild(likeCommentButton);
+  bottomLine.appendChild(dateComment);
+  bottomLine.appendChild(likeCommentButton);
 
   deleteCommentButton.addEventListener("click", deleteComment);
   likeCommentButton.addEventListener("click", () =>
     likeComment(com, likeCommentButton)
   );
 
-  console.log(arrayСomments);
   comment.value = "";
   name.value = "";
 });

@@ -17,33 +17,30 @@
     <div class="container">
       <div class="post">
         <img src="./image/pict1.jpg" />
-        <div id="сommentBlock">
-          <div id="comments">
-            <h3>Оставьте ваш комментарий:</h3>
-          </div>
+      </div>
+      <div id="сommentBlock">
+        <div id="comments">
+          <h3>Оставьте ваш комментарий:</h3>
+        </div>
 
-          <div class="new_comment">
-            <form class="form" name="comment">
-              <label for="name">Имя</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value="Alex"
-                required
-                minlength="2"
-              />
+        <div class="new_comment">
+          <form class="form" name="comment">
+            <label for="name">Имя</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value=""
+              required
+              minlength="2"
+              maxlength="30"
+            />
 
-              <label for="entering_comment">Комментарий</label>
-              <textarea
-                id="entering_comment"
-                name="comment"
-                required
-              ></textarea>
-              <input id="date" type="date" />
-              <input type="submit" />
-            </form>
-          </div>
+            <label for="entering_comment">Комментарий</label>
+            <textarea id="entering_comment" name="comment" required></textarea>
+            <input id="date" type="date" />
+            <input type="submit" />
+          </form>
         </div>
       </div>
     </div>
